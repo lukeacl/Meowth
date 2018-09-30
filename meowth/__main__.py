@@ -4956,7 +4956,7 @@ async def research(ctx, *, details = None):
         if details:
             research_split = details.rsplit(",", 2)
             if len(research_split) < 2 or len(research_split) > 3:
-                error = _("entered an incorrect amount of arguments.\n\nUsage: **!research** or **!research <pokestop>, <reward>** or **!research <pokestop>, <quest>, <reward>**")
+                error = _("entered an incorrect amount of arguments.\n\nUsage: **!research** or **!research <pokestop>, <reward>** or **!research <pokestop>, <reward>, <quest>**")
                 break
             location = ""
             quest = "Unspecified"
@@ -4964,7 +4964,7 @@ async def research(ctx, *, details = None):
             if len(research_split) == 2:
                 location, reward = research_split
             elif len(research_split) == 3:
-                location, quest, reward = research_split
+                location, reward, quest = research_split
             loc_url = create_gmaps_query(location, message.channel, type="research")
             location = location.replace(loc_url,"").strip()
             research_embed.add_field(name=_("**Pokestop:**"),value='\n'.join(textwrap.wrap(location.title(), width=30)),inline=True)
