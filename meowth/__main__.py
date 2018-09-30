@@ -4956,7 +4956,7 @@ async def research(ctx, *, details = None):
         if details:
             research_split = details.rsplit(",", 2)
             if len(research_split) < 2 or len(research_split) > 3:
-                error = _("entered an incorrect amount of arguments.\n\nUsage: **{config['bot_token']}research** or **!research <pokestop>, <reward>** or **!research <pokestop>, <reward>, <quest>**")
+                error = _("entered an incorrect amount of arguments.\n\nUsage: **{prefix}research** or **!research <pokestop>, <reward>** or **!research <pokestop>, <reward>, <quest>**")
                 break
             location = ""
             quest = "Unspecified"
