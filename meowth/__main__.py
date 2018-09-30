@@ -4961,9 +4961,9 @@ async def research(ctx, *, details = None):
             location = ""
             quest = ""
             reward = "Unspecified"
-            if len(research_split) == 2
+            if len(research_split) == 2:
                 location, quest = research_split
-            elif len(research_split) == 3
+            elif len(research_split) == 3:
                 location, quest, reward = research_split
             loc_url = create_gmaps_query(location, message.channel, type="research")
             location = location.replace(loc_url,"").strip()
