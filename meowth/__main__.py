@@ -1823,7 +1823,7 @@ async def _configure(ctx, configlist):
             if config_dict_temp[commandconfig].get('enabled',False):
                 enabled_commands.append(commandconfig)
         configmessage += _("\n\n**Enabled Commands:**\n{enabled_commands}").format(enabled_commands=", ".join(enabled_commands))
-        configmessage += _("\n\n**All Commands:**\n**all** - To redo configuration\n**team** - For Team Assignment configuration\n**welcome** - For Welcome Message configuration\n**raid** - for raid command configuration\n**exraid** - for EX raid command configuration\n**invite** - for invite command configuration\n**counters** - for automatic counters configuration\n**wild** - for wild command configuration\n**research** - for !research command configuration\n**meetup** - for !meetup command configuration\n**want** - for want/unwant command configuration\n**archive** - For !archive configuration\n**trade** - For trade command configuration\n**timezone** - For timezone configuration")
+        configmessage += _("\n\n**All Commands:**\n**all** - To redo configuration\n**team** - For Team Assignment configuration\n**welcome** - For Welcome Message configuration\n**raid** - for raid command configuration\n**exraid** - for EX raid command configuration\n**invite** - for invite command configuration\n**counters** - for automatic counters configuration\n**wild** - for wild command configuration\n**research** - for {prefix}research command configuration\n**meetup** - for !meetup command configuration\n**want** - for want/unwant command configuration\n**archive** - For !archive configuration\n**trade** - For trade command configuration\n**timezone** - For timezone configuration").format(prefix=ctx.prefix)
         configmessage += _('\n\nReply with **cancel** at any time throughout the questions to cancel the configure process.')
         await owner.send(embed=discord.Embed(colour=discord.Colour.lighter_grey(), description=configmessage).set_author(name=_('Meowth Configuration - {guild}').format(guild=guild.name), icon_url=Meowth.user.avatar_url))
         while True:
@@ -2783,7 +2783,7 @@ async def _configure_wild(ctx):
 
 @configure.command()
 async def research(ctx):
-    """!research reporting settings"""
+    """{prefix}research reporting settings"""
     guild = ctx.message.guild
     owner = ctx.message.author
     try:
@@ -2810,7 +2810,7 @@ async def _configure_research(ctx):
     guild = ctx.message.guild
     owner = ctx.message.author
     config_dict_temp = getattr(ctx, 'config_dict_temp',copy.deepcopy(guild_dict[guild.id]['configure_dict']))
-    await owner.send(embed=discord.Embed(colour=discord.Colour.lighter_grey(), description=_("Research Reporting allows users to report field research with **!research**. Pokemon **research** reports are contained within one or more channels. Each channel will be able to represent different areas/communities. I'll need you to provide a list of channels in your server you will allow reports from in this format: `channel-name, channel-name, channel-name`\n\nExample: `kansas-city-research, hull-research, sydney-research`\n\nIf you do not require **research** reporting, you may want to disable this function.\n\nRespond with: **N** to disable, or the **channel-name** list to enable, each seperated with a comma and space:")).set_author(name=_('Research Reporting Channels'), icon_url=Meowth.user.avatar_url))
+    await owner.send(embed=discord.Embed(colour=discord.Colour.lighter_grey(), description=_("Research Reporting allows users to report field research with **{prefix}research**. Pokemon **research** reports are contained within one or more channels. Each channel will be able to represent different areas/communities. I'll need you to provide a list of channels in your server you will allow reports from in this format: `channel-name, channel-name, channel-name`\n\nExample: `kansas-city-research, hull-research, sydney-research`\n\nIf you do not require **research** reporting, you may want to disable this function.\n\nRespond with: **N** to disable, or the **channel-name** list to enable, each seperated with a comma and space:")).set_author(prefix=ctx.prefix, name=_('Research Reporting Channels'), icon_url=Meowth.user.avatar_url))
     citychannel_dict = {}
     while True:
         citychannels = await Meowth.wait_for('message', check=(lambda message: (message.guild == None) and message.author == owner))
@@ -4936,12 +4936,12 @@ async def _invite(ctx):
 @checks.allowresearchreport()
 async def research(ctx, *, details = None):
     """Report Field research
-    Guided report method with just !research. If you supply arguments in one
+    Guided report method with just {prefix}research. If you supply arguments in one
     line, avoid commas in anything but your separations between pokestop,
     quest, reward. Order matters if you supply arguments. If a pokemon name
     is included in reward, a @mention will be used if role exists.
 
-    Usage: !research [pokestop name [optional URL], quest, reward]"""
+    Usage: {prefix}research [pokestop name [optional URL], quest, reward]"""
     message = ctx.message
     channel = message.channel
     author = message.author
@@ -7356,7 +7356,7 @@ async def _researchlist(ctx):
     if questmsg:
         listmsg = _(' **Here\'s the current research reports for {channel}**\n{questmsg}').format(channel=ctx.message.channel.name.capitalize(),questmsg=questmsg)
     else:
-        listmsg = _(" There are no reported research reports. Report one with **!research**")
+        listmsg = _(" There are no reported research reports. Report one with **{prefix}research**").format(prefix=ctx.prefix)
     return listmsg
 
 @_list.command()
