@@ -5039,7 +5039,7 @@ async def research(ctx, *, details = None):
                 roletest = _("{pokemon} - ").format(pokemon=role.mention)
         research_msg = _("{roletest}Field Research reported by {author}").format(roletest=roletest,author=author.mention)
         research_embed.title = _('Meowth! Click here for my directions to the research!')
-        research_embed.description = _("Ask {author} if my directions aren't perfect!").format(author=author.name)
+        research_embed.description = _("Ask {author} if my directions aren't perfect!").format(author=author.mention)
         research_embed.url = loc_url
         confirmation = await channel.send(research_msg,embed=research_embed)
         research_dict = copy.deepcopy(guild_dict[guild.id].get('questreport_dict',{}))
