@@ -2680,7 +2680,7 @@ async def _configure_counters(ctx):
 
 @configure.command()
 async def wild(ctx):
-    """!wild reporting settings"""
+    """{prefix}wild reporting settings"""
     guild = ctx.message.guild
     owner = ctx.message.author
     try:
@@ -2707,7 +2707,7 @@ async def _configure_wild(ctx):
     guild = ctx.message.guild
     owner = ctx.message.author
     config_dict_temp = getattr(ctx, 'config_dict_temp',copy.deepcopy(guild_dict[guild.id]['configure_dict']))
-    await owner.send(embed=discord.Embed(colour=discord.Colour.lighter_grey(), description=_("Wild Reporting allows users to report wild spawns with **!wild**. Pokemon **wild** reports are contained within one or more channels. Each channel will be able to represent different areas/communities. I'll need you to provide a list of channels in your server you will allow reports from in this format: `channel-name, channel-name, channel-name`\n\nExample: `kansas-city-wilds, hull-wilds, sydney-wilds`\n\nIf you do not require **wild** reporting, you may want to disable this function.\n\nRespond with: **N** to disable, or the **channel-name** list to enable, each seperated with a comma and space:")).set_author(name=_('Wild Reporting Channels'), icon_url=Meowth.user.avatar_url))
+    await owner.send(embed=discord.Embed(colour=discord.Colour.lighter_grey(), description=_("Wild Reporting allows users to report wild spawns with **{prefix}wild**. Pokemon **wild** reports are contained within one or more channels. Each channel will be able to represent different areas/communities. I'll need you to provide a list of channels in your server you will allow reports from in this format: `channel-name, channel-name, channel-name`\n\nExample: `kansas-city-wilds, hull-wilds, sydney-wilds`\n\nIf you do not require **wild** reporting, you may want to disable this function.\n\nRespond with: **N** to disable, or the **channel-name** list to enable, each seperated with a comma and space:")).set_author(prefix=ctx.prefix, name=_('Wild Reporting Channels'), icon_url=Meowth.user.avatar_url))
     citychannel_dict = {}
     while True:
         citychannels = await Meowth.wait_for('message', check=(lambda message: (message.guild == None) and message.author == owner))
@@ -3064,7 +3064,7 @@ async def _configure_meetup(ctx):
 
 @configure.command()
 async def want(ctx):
-    """!want/!unwant settings"""
+    """{prefix}want/{prefix}unwant settings"""
     guild = ctx.message.guild
     owner = ctx.message.author
     try:
@@ -3091,7 +3091,7 @@ async def _configure_want(ctx):
     guild = ctx.message.guild
     owner = ctx.message.author
     config_dict_temp = getattr(ctx, 'config_dict_temp',copy.deepcopy(guild_dict[guild.id]['configure_dict']))
-    await owner.send(embed=discord.Embed(colour=discord.Colour.lighter_grey(), description=_("The **!want** and **!unwant** commands let you add or remove roles for Pokemon that will be mentioned in reports. This let you get notifications on the Pokemon you want to track. I just need to know what channels you want to allow people to manage their pokemon with the **!want** and **!unwant** command.\n\nIf you don't want to allow the management of tracked Pokemon roles, then you may want to disable this feature.\n\nRepond with: **N** to disable, or the **channel-name** list to enable, each seperated by a comma and space.")).set_author(name=_('Pokemon Notifications'), icon_url=Meowth.user.avatar_url))
+    await owner.send(embed=discord.Embed(colour=discord.Colour.lighter_grey(), description=_("The **{prefix}want** and **{prefix}unwant** commands let you add or remove roles for Pokemon that will be mentioned in reports. This let you get notifications on the Pokemon you want to track. I just need to know what channels you want to allow people to manage their pokemon with the **{prefix}want** and **{prefix}unwant** command.\n\nIf you don't want to allow the management of tracked Pokemon roles, then you may want to disable this feature.\n\nRepond with: **N** to disable, or the **channel-name** list to enable, each seperated by a comma and space.")).set_author(prefix=ctx.prefix, name=_('Pokemon Notifications'), icon_url=Meowth.user.avatar_url))
     while True:
         wantchs = await Meowth.wait_for('message', check=(lambda message: (message.guild == None) and message.author == owner))
         if wantchs.content.lower() == 'n':
@@ -3883,11 +3883,11 @@ Notifications
 async def want(ctx,*,pokemon):
     """Add a Pokemon to your wanted list.
 
-    Usage: !want <species>
+    Usage: {prefix}want <species>
     Meowth will mention you if anyone reports seeing
-    this species in their !wild or !raid command."""
+    this species in their {prefix}wild or {prefix}raid command."""
 
-    """Behind the scenes, Meowth tracks user !wants by
+    """Behind the scenes, Meowth tracks user {prefix}wants by
     creating a server role for the Pokemon species, and
     assigning it to the user."""
     message = ctx.message
@@ -3991,7 +3991,7 @@ async def want(ctx,*,pokemon):
 async def unwant(ctx,*,pokemon):
     """Remove a Pokemon from your wanted list.
 
-    Usage: !unwant <species>
+    Usage: {prefix}unwant <species>
     You will no longer be notified of reports about this Pokemon."""
 
     """Behind the scenes, Meowth removes the user from
@@ -4035,7 +4035,7 @@ async def unwant(ctx,*,pokemon):
 async def unwant_all(ctx):
     """Remove all Pokemon from your wanted list.
 
-    Usage: !unwant all
+    Usage: {prefix}unwant all
     All Pokemon roles are removed."""
 
     """Behind the scenes, Meowth removes the user from
@@ -4069,7 +4069,7 @@ Reporting
 async def wild(ctx,pokemon,*,location):
     """Report a wild Pokemon spawn location.
 
-    Usage: !wild <species> <location>
+    Usage: {prefix}wild <species> <location>
     Meowth will insert the details (really just everything after the species name) into a
     Google maps link and post the link to the same channel the report was made in."""
     content = f"{pokemon} {location}"
@@ -4079,7 +4079,7 @@ async def _wild(message, content):
     timestamp = (message.created_at + datetime.timedelta(hours=guild_dict[message.channel.guild.id]['configure_dict']['settings']['offset'])).strftime(_('%I:%M %p (%H:%M)'))
     wild_split = content.split()
     if len(wild_split) <= 1:
-        await message.channel.send(_('Meowth! Give more details when reporting! Usage: **!wild <pokemon name> <location>**'))
+        await message.channel.send(_('Meowth! Give more details when reporting! Usage: **{prefix}wild <pokemon name> <location>**').format(prefix=ctx.prefix))
         return
     rgx = '[^a-zA-Z0-9]'
     content = ' '.join(wild_split)
@@ -4095,7 +4095,7 @@ async def _wild(message, content):
             try:
                 wild_details = content.split(' ', 2)[2]
             except IndexError:
-                await message.channel.send(_('Meowth! Give more details when reporting! Usage: **!wild <pokemon name> <location>**'))
+                await message.channel.send(_('Meowth! Give more details when reporting! Usage: **{prefix}wild <pokemon name> <location>**').format(prefix=ctx.prefix))
                 return
     if pkmn_match:
         entered_wild = pkmn_match
@@ -7318,9 +7318,9 @@ async def _wantlist(ctx):
         if role.name in pkmn_info['pokemon_list']:
             wantlist.append(role.name.title())
     if len(wantlist) > 0:
-        listmsg = _(' Your current **!want** list is: ```{wantlist}```').format(wantlist=', '.join(wantlist))
+        listmsg = _(' Your current **{prefix}want** list is: ```{wantlist}```').format(prefix=ctx.prefix, wantlist=', '.join(wantlist))
     else:
-        listmsg = _(" You don\'t have any wants! use **!want** to add some.")
+        listmsg = _(" You don\'t have any wants! use **{prefix}want** to add some.").format(prefix=ctx.prefix)
     return listmsg
 
 @_list.command()
@@ -7392,7 +7392,7 @@ async def _wildlist(ctx):
     if wildmsg:
         listmsg = _(' **Here\'s the current wild reports for {channel}**\n{wildmsg}').format(channel=ctx.message.channel.name.capitalize(),wildmsg=wildmsg)
     else:
-        listmsg = _(" There are no reported wild pokemon. Report one with **!wild <pokemon> <location>**")
+        listmsg = _(" There are no reported wild pokemon. Report one with **{prefix}wild <pokemon> <location>**").format(prefix=ctx.prefix)
     return listmsg
 
 try:
