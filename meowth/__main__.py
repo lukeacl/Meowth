@@ -4993,7 +4993,7 @@ async def research(ctx, *, details = None):
             await pokestopmsg.delete()
             research_embed.add_field(name=_("**Pokestop:**"),value='\n'.join(textwrap.wrap(location.title(), width=30)),inline=True)
             research_embed.set_field_at(0, name=research_embed.fields[0].name, value=_("Great! Now, reply with the **quest** that you received from **{location}**. You can reply with **cancel** to stop anytime.\n\nHere's what I have so far:").format(location=location), inline=False)
-            questwait = await channel.send(embed=research_embed)
+            '''questwait = await channel.send(embed=research_embed)
             try:
                 questmsg = await Meowth.wait_for('message', timeout=60, check=(lambda reply: reply.author == message.author))
             except asyncio.TimeoutError:
@@ -5010,7 +5010,8 @@ async def research(ctx, *, details = None):
                 quest = questmsg.clean_content
             await questmsg.delete()
             research_embed.add_field(name=_("**Quest:**"),value='\n'.join(textwrap.wrap(quest.title(), width=30)),inline=True)
-            research_embed.set_field_at(0, name=research_embed.fields[0].name, value=_("Fantastic! Now, reply with the **reward** for the **{quest}** quest that you received from **{location}**. You can reply with **cancel** to stop anytime.\n\nHere's what I have so far:").format(quest=quest, location=location), inline=False)
+            research_embed.set_field_at(0, name=research_embed.fields[0].name, value=_("Fantastic! Now, reply with the **reward** for the **{quest}** quest that you received from **{location}**. You can reply with **cancel** to stop anytime.\n\nHere's what I have so far:").format(quest=quest, location=location), inline=False)'''
+            quest = "Unspecified"
             rewardwait = await channel.send(embed=research_embed)
             try:
                 rewardmsg = await Meowth.wait_for('message', timeout=60, check=(lambda reply: reply.author == message.author))
